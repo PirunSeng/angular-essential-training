@@ -1,46 +1,45 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
+
+@Injectable()
 export class MediaItemService {
-	get() {
-		return this.mediaItems;
-	}
 
-	add(mediaItem) {
-		this.mediaItems.push(mediaItem);
-	}
+  constructor(private http: HttpClient){}
 
-	delete(mediaItem) {
-		let index = this.mediaItems.indexOf(mediaItem);
-		if(index >= 0) {
-			this.mediaItems.splice(index, 1);
-		}
-	}
-	
-	mediaItems = [
-		{
-			it: 1,
-			name: 'Firebug',
-			medium: 'Series',
-			category: 'Science Fiction',
-			year: 2010,
-			watchedOn: 1293166565384,
-			isFavorite: false
-		},
-		{
-			it: 1,
-			name: 'Waterbug',
-			medium: 'Series',
-			category: 'Science Fiction',
-			year: 2009,
-			watchedOn: 1293166565384,
-			isFavorite: false
-		},
-		{
-			it: 3,
-			name: 'Spiderman',
-			medium: 'Movies',
-			category: 'Love Story',
-			year: 2000,
-			watchedOn: 1293166565384,
-			isFavorite: true
-		}
-	];
+  get(medium) {
+    const getOptions = {
+      params: {
+        medium
+      }
+    };
+    return this.http.get<MediaItemResponse>('mediaitems', getOptions).pipe(
+      map((response: MediaItemResponse) => {
+        return response.mediaItems;
+      })
+    );
+  }
+
+  add(mediaItem) {
+    return this.http.post('mediaitems', mediaItem);
+  }
+
+
+  delete(mediaItem) {
+    return this.http.delete(`mediaitems/${mediaItem.id}`);
+  }
+}
+
+interface MediaItem {
+	id: number;
+	name: string;
+	medium: string;
+	category: string;
+	year: number;
+	watchedOn: number;
+	isFavorite: boolean;
+}
+
+interface MediaItemResponse {
+	mediaItems: MediaItem[];
 }
