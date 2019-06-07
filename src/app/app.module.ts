@@ -13,6 +13,7 @@ import { MediaItemService } from './media-item.service';
 import { lookupListToken, lookupLists } from './providers';
 import { HttpClientModule, HttpXhrBackend } from '@angular/common/http';
 import { MockXHRBackend } from './mock-xhr-backend';
+import { routing } from './app.routing';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { MockXHRBackend } from './mock-xhr-backend';
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    routing
   ],
   providers: [
     MediaItemService,
